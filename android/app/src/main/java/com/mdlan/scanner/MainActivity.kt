@@ -1,55 +1,40 @@
 package com.mdlan.scanner
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.webkit.CookieManager
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.app.Activity
+import androidx.activity.ComponentActivity
 
-class MainActivity : Activity() {
-    private lateinit var webView: WebView
-
-    @SuppressLint("SetJavaScriptEnabled")
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        webView = WebView(this).apply {
-            settings.javaScriptEnabled = true
-            settings.domStorageEnabled = true
-            settings.databaseEnabled = true
-            settings.allowFileAccess = true
-            settings.allowContentAccess = true
-            settings.loadsImagesAutomatically = true
-            settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(
-                    view: WebView,
-                    request: WebResourceRequest
-                ): Boolean = false
-            }
-            webChromeClient = WebChromeClient()
-        }
-
-        CookieManager.getInstance().setAcceptCookie(true)
+        
+        // Create WebView
+        val webView = WebView(this)
         setContentView(webView)
-        webView.loadUrl("file:///android_asset/www/index.html")
-    }
-
-    @Deprecated("Use the system back dispatcher when this app adopts AndroidX.")
-    override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            super.onBackPressed()
+        
+        // Configure WebView settings
+        val settings: WebSettings = webView.settings.apply {
+            // Enable JavaScript
+            javaScriptEnabled = true
+            
+            // Enable DOM storage
+            domStorageEnabled = true
+            
+            // Enable local storage
+            databaseEnabled = true
+            
+            // Set appropriate user agent
+            userAgentString = userAgentString + " MDLANScanner/1.0"
+            
+            // Enable mixed content (for HTTP resources on HTTPS or vice versa)
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            
+            // Cache settings
+            cacheMode = WebSettings.LOAD_DEFAULT
         }
-    }
-
-    override fun onDestroy() {
-        webView.stopLoading()
-        webView.destroy()
-        super.onDestroy()
+        
+        // Load the React app from assets
+        webView.loadUrl("file:///android_asset/www/index.html")
     }
 }
