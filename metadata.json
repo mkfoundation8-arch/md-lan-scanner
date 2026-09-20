@@ -1,0 +1,6 @@
+{
+  "name": "MD LAN Scanner",
+  "description": "Android Wi-Fi subnet LAN scanner with XAMPP Apache detection, in-app WebView browser, and favorite projects manager.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

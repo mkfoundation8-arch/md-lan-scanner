@@ -1,7 +1,6 @@
 {
   "name": "md-lan-scanner",
   "version": "1.0.0",
-  "description": "MD LAN Scanner - Network scanning tool for local area networks",
   "type": "module",
   "scripts": {
     "dev": "vite",

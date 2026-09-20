@@ -37,13 +37,12 @@ android {
 
 dependencies {
     // Android Core
-    implementation("androidx.activity:activity-compose:1.8.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.core:core:1.12.0")
-    
-    // WebKit
+
+    // WebKit (enhanced WebView support)
     implementation("androidx.webkit:webkit:1.9.0")
-    
+
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
 }

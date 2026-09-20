@@ -1,26 +1,21 @@
-import fs from 'fs-extra';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const srcDir = path.join(__dirname, '..', 'dist');
-const destDir = path.join(__dirname, '..', 'android', 'app', 'src', 'main', 'assets', 'www');
+const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const srcDir = path.join(projectRoot, 'dist');
+const destDir = path.join(projectRoot, 'android', 'app', 'src', 'main', 'assets', 'www');
 
 async function copyAssets() {
   try {
-    // Ensure destination directory exists
-    await fs.ensureDir(destDir);
-    
-    // Copy all files from dist to android assets
-    await fs.copy(srcDir, destDir, { overwrite: true });
-    
+    await fs.rm(destDir, { recursive: true, force: true });
+    await fs.mkdir(destDir, { recursive: true });
+    await fs.cp(srcDir, destDir, { recursive: true });
     console.log(`✓ Assets copied from ${srcDir} to ${destDir}`);
-    console.log('✓ Android WebView assets are ready!');
   } catch (error) {
     console.error('✗ Error copying assets:', error);
-    process.exit(1);
+    process.exitCode = 1;
   }
 }
 
-copyAssets();
+await copyAssets();
